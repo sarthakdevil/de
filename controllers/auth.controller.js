@@ -1,29 +1,23 @@
-import Player from "../config/user.config"
-import fs from 'fs';
-import csv from 'csv-parser';
+import Player from "../config/user.config.js"
 import bcrypt from 'bcryptjs'
-import cookieParser from 'cookie-parser';
-import { decodeToken } from "../helpers/helper";
-import { increasePointsHandler, isCorrect } from "../middleware/iscorrect";
-import bcrypt from 'bcrypt';
-import { Player } from '../models'; // Import your Player model
-import { sendMail } from './email'; // Import your email sending function
+import { decodeToken } from "../helpers/helper.js";
+import { increasePointsHandler, isCorrect } from "../middleware/iscorrect.js";
 
 export const login = async (req, res, next) => {
     try {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
-        if (!username || !password) {
+        if (!email || !password) {
             return res.status(400).json({ message: "Missing credentials" });
         }
 
-        const user = await Player.findOne({ username });
+        const user = await Player.findOne({ email });
 
         if (!user) {
             return res.status(401).json({ message: "Invalid username or password" });
         }
 
-        const validPassword = await bcrypt.compare(password, user.password);
+        const validPassword = bcrypt.compare(password, user.password);
 
         if (!validPassword) {
             return res.status(401).json({ message: "Invalid username or password" });
@@ -34,7 +28,7 @@ export const login = async (req, res, next) => {
 
         res.cookie('token', token, { 
             httpOnly: true,//csrf protection
-            maxAge: 3600000 // 1 hour in milliseconds
+            maxAge: 7200000 // 2 hour in milliseconds
         });
         res.status(200).json({ token });
     } catch (err) {
@@ -49,6 +43,7 @@ export const logout = (req, res) => {
 
     res.status(200).json({ message: "Logout successful" });
 };
+
 export const isattempted = async (req, res) => {
     const ans = req.body.ans;
     const token = req.headers.authorization; // Assuming JWT is sent in the authorization header

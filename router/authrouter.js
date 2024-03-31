@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { login, register,logout, isattempted } from "../controllers/auth.controller";
-import isLoggedIn from "../middleware/isloggedin";
+import { login,logout, isattempted } from "../controllers/auth.controller.js";
+import isLoggedIn from "../middleware/isloggedin.js";
 
 const r = Router()
 r.post("/login",login)
-r.post("/logout",isLoggedIn,logout)
-r.put("/submit",isloggedin,isattempted)
+r.get("/logout",isLoggedIn,logout)
+r.put("/submit",isLoggedIn,isattempted)
+
+export  default r;

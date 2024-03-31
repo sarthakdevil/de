@@ -7,15 +7,15 @@ const isLoggedIn = async (req, res, next) => {
 
     // If no token, send an unauthorized message
     if (!token) {
-      throw new AppError('Unauthorized, please login to continue', 401);
+      res.status(400).error('You are not logged in');
     }
 
     // Decoding the token using jwt package verify method
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // If decoding fails, send an unauthorized message
     if (!decoded) {
-      throw new AppError('Unauthorized, please login to continue', 401);
+      res.status(401).error('token not identified');
     }
 
     // If all good, store the decoded payload in the req object
@@ -32,7 +32,7 @@ const isLoggedIn = async (req, res, next) => {
 
     // For other errors, you might want to log the error and send a generic unauthorized message
     console.error('Error during token verification:', error);
-    return next(new AppError('Unauthorized, please login to continue', 401));
+    return res.status(401).error('token not identified');
   }
 };
 

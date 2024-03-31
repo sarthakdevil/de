@@ -1,7 +1,7 @@
 import Card from '../config/card.config.js'; 
-import { pointhandler } from './auth.controller.js';
+import { increasePointsHandler } from '../middleware/iscorrect.js';
 
-export const cards = async (req, res, next) => {
+export const getcards = async (req, res, next) => {
     try {
         // Query all cards from the database
         const allCards = await Card.find();
@@ -12,3 +12,9 @@ export const cards = async (req, res, next) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const create = async  (req, res) => {
+    if (!req.body.card_number || question_Url || instruction || answer){
+
+    }
+}

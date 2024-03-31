@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from  'jsonwebtoken';
 const secretKey = 'your_secret_key'; // Replace 'your_secret_key' with your actual secret key
 
 export function decodeToken(token) {

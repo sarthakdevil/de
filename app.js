@@ -1,7 +1,10 @@
-import express from 'express'
+import express, { Router } from 'express'
 import dotenv  from 'dotenv';
 import cors  from "cors";
-import morgan from  'morgan';
+import morgan, { format } from  'morgan';
+import cookieParser from 'cookie-parser';
+import r from './router/authrouter.js';
+import cardr from './router/cardrouter.js';
 dotenv.config()
 const app = express()
 app.use(cors({
@@ -9,9 +12,12 @@ app.use(cors({
     methods: 'GET,POST',           // Allow these HTTP methods
     allowedHeaders: 'Content-Type', // Allow these headers
 }))
-app.use(morgan())
+app.use(express.json())
+app.use(cookieParser());
+app.use(morgan(format))
+app.use(r);
+app.use(cardr)
 app.get('*',(req,res)=>{
     res.send(`<h1>Hello World! From Express Server</h1>`)
 })
-app.use(express.json())
 export default app

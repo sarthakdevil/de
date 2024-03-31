@@ -1,5 +1,5 @@
-import Card from "../config/card.config";
-import Player from "../config/user.config";
+import Card from "../config/card.config.js";
+import Player from "../config/user.config.js";
 
 export async function isCorrect(cardNumber, ans) {
     try {

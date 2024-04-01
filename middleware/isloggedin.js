@@ -7,7 +7,7 @@ const isLoggedIn = async (req, res, next) => {
 
     // If no token, send an unauthorized message
     if (!token) {
-      res.status(400).error('You are not logged in');
+      res.status(400).send('You are not logged in');
     }
 
     // Decoding the token using jwt package verify method
@@ -15,7 +15,7 @@ const isLoggedIn = async (req, res, next) => {
 
     // If decoding fails, send an unauthorized message
     if (!decoded) {
-      res.status(401).error('token not identified');
+      res.status(401).send('token not identified');
     }
 
     // If all good, store the decoded payload in the req object
@@ -27,12 +27,12 @@ const isLoggedIn = async (req, res, next) => {
     // Handle any errors that occur during token verification
     if (error.name === 'TokenExpiredError') {
       // Token has expired
-      return next(new AppError('Token has expired, please log in again', 401));
+      return res.status(401).send('token expired');
     }
 
     // For other errors, you might want to log the error and send a generic unauthorized message
     console.error('Error during token verification:', error);
-    return res.status(401).error('token not identified');
+    return res.status(401).sen('token not identified');
   }
 };
 

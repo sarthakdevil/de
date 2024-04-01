@@ -24,7 +24,11 @@ const playerSchema = new mongoose.Schema({
     Schoolname: String,
     Graduation: Number, // Year of graduation
     points: Number,
-    attempted: Number // Number of questions attempted by the user
+    attempted: Number ,// Number of questions attempted by the user
+    last_updated: {
+        type:Date,
+        last_updated:true
+    } 
 });
 
 // Define a method to generate authentication token

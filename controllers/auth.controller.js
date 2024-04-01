@@ -47,7 +47,7 @@ export const logout = (req, res) => {
 export const isattempted = async (req, res) => {
     const ans = req.body.ans;
     const token = req.headers.authorization; // Assuming JWT is sent in the authorization header
-
+    const card_number = req.body.card_number;
     if (!token) {
         console.log("No JWT provided");
         // Handle case where no JWT is provided
@@ -93,3 +93,19 @@ export const isattempted = async (req, res) => {
         // Handle error
     }
 };
+
+export const leaderboard = async(req,res)=>{
+    try{
+        Player.find().sort({points:-1}).exec((err,docs)=> {
+            if(!err){
+              res.status(200).json(docs);
+            }else{
+              console.log('Error retriving data');
+              res.status(500).json({message:"Server Error"});
+            }
+          })
+    }catch(e){
+      console.log(e);
+      res.status(500).send("unable to fetch leaderboard at this moment");
+    }
+}

@@ -47,9 +47,3 @@ export async function increasePointsHandler(playerId) {
         // Handle error
     }
 }
-
-// Usage:
-// increasePointsHandler(playerId);
-
-// Usage:
-// increasePointsHandler(playerId);

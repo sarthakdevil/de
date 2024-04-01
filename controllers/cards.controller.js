@@ -13,8 +13,6 @@ export const getcards = async (req, res, next) => {
     }
 };
 
-import Card from './models/Card'; // Assuming Card is your Mongoose model
-
 export const create = async (req, res, next) => {
     try {
         const { card_number, question_Url, instruction, answer } = req.body;
@@ -41,10 +39,10 @@ export const create = async (req, res, next) => {
     }
 };
 
-export const getcardbyId = async(req,res)=>{
-    const id = req.params._id
+export const getcardbyCard_number = async(req,res)=>{
+    const id = req.params.card_number
     if (!Card.validateID(id))return res.status(400).send('Invalid Id')
-    const card=await Card.getCardById(id)
+    const card=await Card.findOne(card_number)
     if(!card) res.status(404).send('The card does not exist')
 
     else res.status(200).send(card)

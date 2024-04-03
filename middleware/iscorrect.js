@@ -1,17 +1,17 @@
-import Card from "../config/card.config.js";
-import Player from "../config/user.config.js";
-
+import Card from "../model/card.config.js";
+import Player from "../model/user.config.js";
+import crypto from  'crypto';
 export async function isCorrect(cardNumber, ans) {
     try {
         // Assuming you have a Card model
-        const card = await Card.findOne({ cardNumber: cardNumber }).exec();
+        const card = await Card.findOne({ cardNumber: cardNumber }).select('+answer');
 
         if (!card) {
             console.log("Card not found");
             return false;
         }
-
-        if (card.answer === ans) {
+        const hashedAnswer = crypto.createHash('sha256').update(ans).digest('hex');
+        if (card.answer === hashedAnswer) {
             console.log("Answer is correct!");
             return true;
         } else {

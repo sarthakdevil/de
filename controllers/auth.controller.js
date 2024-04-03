@@ -1,4 +1,4 @@
-import Player from "../config/user.config.js"
+import Player from "../model/user.config.js"
 import bcrypt from 'bcryptjs'
 import { decodeToken } from "../helpers/helper.js";
 import { increasePointsHandler, isCorrect } from "../middleware/iscorrect.js";
@@ -11,7 +11,7 @@ export const login = async (req, res, next) => {
             return res.status(400).json({ message: "Missing credentials" });
         }
 
-        const user = await Player.findOne({ email });
+        const user = await Player.findOne({ email }).select('+password');
 
         if (!user) {
             return res.status(401).json({ message: "Invalid username or password" });

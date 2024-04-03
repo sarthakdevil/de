@@ -32,7 +32,7 @@ const isLoggedIn = async (req, res, next) => {
 
     // For other errors, you might want to log the error and send a generic unauthorized message
     console.error('Error during token verification:', error);
-    return res.status(401).sen('token not identified');
+    return res.status(401).send('token not identified');
   }
 };
 

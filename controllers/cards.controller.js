@@ -1,6 +1,6 @@
-import Card from '../config/card.config.js'; 
+import Card from '../model/card.config.js'; 
 import { increasePointsHandler } from '../middleware/iscorrect.js';
-
+import crypto from 'crypto';
 export const getcards = async (req, res, next) => {
     try {
         // Query all cards from the database
@@ -28,8 +28,16 @@ export const create = async (req, res, next) => {
             return res.status(400).json({ message: "Card already exists!" });
         }
         
-        // Create a new card document
-        const card = new Card(req.body);
+        // Hash the answer
+        const hashedAnswer = crypto.createHash('sha256').update(answer).digest('hex');
+
+        // Create a new card document with the hashed answer
+        const card = new Card({
+            card_number,
+            question_Url,
+            instruction,
+            answer: hashedAnswer
+        });
         await card.save();
         
         res.status(201).json(card);

@@ -16,7 +16,7 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(morgan(format))
 app.use(r);
-app.use(cardr)
+app.use(cardr);
 app.get('*',(req,res)=>{
     res.send(`<h1>Hello World! From Express Server</h1>`)
 })

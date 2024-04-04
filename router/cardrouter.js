@@ -5,5 +5,5 @@ import isLoggedIn from "../middleware/isloggedin.js";
 const  cardr = Router();
 cardr.post("/cards",getcards)
 cardr.get("/card",getcardbyCard_number)
-cardr.post("/create",isLoggedIn,isAdmin,create)
+cardr.post("/create",isLoggedIn,create)
 export  default cardr;

@@ -46,7 +46,7 @@ export const logout = (req, res) => {
 
 export const isattempted = async (req, res) => {
     const ans = req.body.ans;
-    const token = req.headers.authorization; // Assuming JWT is sent in the authorization header
+    const token = req.cookies.token;
     const card_number = req.body.card_number;
     if (!token) {
         console.log("No JWT provided");

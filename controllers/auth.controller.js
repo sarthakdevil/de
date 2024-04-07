@@ -1,8 +1,8 @@
 import Player from "../model/user.config.js"
 import bcrypt from 'bcryptjs'
 import { decodeToken } from "../helpers/helper.js";
-import { increasePointsHandler, isCorrect } from "../middleware/iscorrect.js";
-
+import { increasePointsHandler, isCorrect, matchans } from "../helpers/iscorrect.js";
+import isLoggedIn from "../middleware/isloggedin.js";
 export const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -44,68 +44,30 @@ export const logout = (req, res) => {
     res.status(200).json({ message: "Logout successful" });
 };
 
-export const isattempted = async (req, res) => {
-    const ans = req.body.ans;
-    const token = req.cookies.token;
-    const card_number = req.body.card_number;
-    if (!token) {
-        console.log("No JWT provided");
-        // Handle case where no JWT is provided
-        return;
+ const answer(req,res)=>{
+    const question_number= req.params.question_number
+    const answer = req.body;
+    answer= answer.toLowerCase();
+    const playerid = req.user._id
+    Player.updateone( { _id: playerId }, { $inc: { questionscompleted: 1 } })
+    const matchans = matchans(question_number,answer)
+    const completed = iscardcompleted()
+
+    if (!completed){
+
+    }else{
+        await playersCollection.updateOne(
+            { _id: playerid },
+            { $inc: { cardcompleted: 1 }, $set: { questionscompleted: 0 } }
+        );
     }
-
-    try {
-        // Extract player information from JWT
-        const playerinfo = decodeToken(token);
-        const playerId = playerinfo.payload.playerId; // Assuming playerId is stored in the token payload
-
-        if (!playerId) {
-            console.log("No playerId found in JWT");
-            // Handle case where playerId is not found in the JWT payload
-            return;
-        }
-
-        // Assuming you have a Player model
-        const player = await new Promise((resolve, reject) => {
-            Player.findOneAndUpdate(
-                { _id: playerId },
-                { $inc: { isattempted: 1 } },
-                { new: true }, // To return the updated document
-                (err, player) => {
-                    if (err) {
-                        console.error("Error updating isattempted:", err);
-                        reject(err);
-                    } else {
-                        console.log("isattempted updated successfully:", player.isattempted);
-                        resolve(player);
-                    }
-                }
-            );
-        });
-
-        // Call your separate function for checking correctness
-        const correct = isCorrect(player.isattempted, ans);
-        if (correct) {
-            await increasePointsHandler(playerId);
-        }
-    } catch (error) {
-        console.error("Error in isattempted:", error);
-        // Handle error
-    }
-};
-
-export const leaderboard = async(req,res)=>{
-    try{
-        Player.find().sort({points:-1}).exec((err,docs)=> {
-            if(!err){
-              res.status(200).json(docs);
-            }else{
-              console.log('Error retriving data');
-              res.status(500).json({message:"Server Error"});
-            }
-          })
-    }catch(e){
-      console.log(e);
-      res.status(500).send("unable to fetch leaderboard at this moment");
-    }
+    if (!matchans) {
+        continue
+    }else {
+        // Find player by playerId and increase point by 1
+        await playersCollection.updateOne(
+            { _id: playerId },
+            { $inc: { point: 1 } }
+        );
+    } 
 }

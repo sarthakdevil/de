@@ -8,13 +8,10 @@ const cardSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'this is required value'],
     },
-    question_Url: String,
     points: Number,
+    question_array,
     instruction: String,
-    answer:{
-        type: String,
-        select: false // This field will not be returned by default
-    }
+    noofquestions: Number,
 });
 // Define the model
 const Card = mongoose.model("Card", cardSchema);

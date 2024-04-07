@@ -8,6 +8,7 @@ const isLoggedIn = async (req, res, next) => {
     // If no token, send an unauthorized message
     if (!token) {
       res.status(400).send('You are not logged in');
+      return; // Return to stop further execution
     }
 
     // Decoding the token using jwt package verify method
@@ -16,6 +17,7 @@ const isLoggedIn = async (req, res, next) => {
     // If decoding fails, send an unauthorized message
     if (!decoded) {
       res.status(401).send('token not identified');
+      return; // Return to stop further execution
     }
 
     // If all good, store the decoded payload in the req object

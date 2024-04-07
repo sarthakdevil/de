@@ -1,6 +1,8 @@
 import Card from '../model/card.config.js'; 
-import { increasePointsHandler } from '../middleware/iscorrect.js';
+import { increasePointsHandler } from '../helpers/iscorrect.js';
 import crypto from 'crypto';
+import Player from '../model/user.config.js';
+
 export const getcards = async (req, res, next) => {
     try {
         // Query all cards from the database
@@ -13,45 +15,61 @@ export const getcards = async (req, res, next) => {
     }
 };
 
-export const create = async (req, res, next) => {
-    try {
-        const { card_number, question_Url, instruction, answer } = req.body;
-        
-        // Check if any required field is missing
-        if (!card_number || !question_Url || !instruction || !answer) {
-            return res.status(400).json({ message: "Missing fields!" });
-        }
-        
-        // Check if a card with the same card_number already exists
-        const existingCard = await Card.findOne({ card_number });
-        if (existingCard) {
-            return res.status(400).json({ message: "Card already exists!" });
-        }
-        
-        // Hash the answer
-        const hashedAnswer = crypto.createHash('sha256').update(answer).digest('hex');
+export const getcardbyCard_number = async (req, res) => {
 
-        // Create a new card document with the hashed answer
-        const card = new Card({
-            card_number,
-            question_Url,
-            instruction,
-            answer: hashedAnswer
-        });
-        await card.save();
-        
-        res.status(201).json(card);
-    } catch (err) {
-        console.log("Error in saving a card to DB:", err);
-        next(err);
+    const cardNumber = req.params.card_number; // Assuming card_number is a parameter in the URL
+
+    try {
+
+        // Find the player by ID
+        const player = await Player.findOne({ playerId: req.user._id }); // Assuming req.user._id holds the player's ID
+
+        // If player not found, return 404
+        if (!player) {
+            return res.status(404).send('Player not found');
+        }
+
+        // Get the cardCompleted value from the player's data
+        const cardCompleted = player.cardCompleted;
+
+        // If cardNumber is not 1 and cardCompleted doesn't match cardNumber - 1, send message to complete previous card
+        if (cardNumber !== '1' && cardCompleted !== String(cardNumber - 1)) {
+            return res.status(403).send('Complete the previous card before accessing this one');
+        }
+
+        // Find the requested card
+        const card = await Card.findOne({ card_number: cardNumber });
+
+        // If the card doesn't exist, return 404
+        if (!card) {
+            return res.status(404).send('The card does not exist');
+        }
+
+        // Send the card details
+        return res.status(200).send(card);
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).send('Internal Server Error');
     }
 };
+// Assuming you're defining this function within an Express route handler
+export const getinstructions = async (req, res) => {
+    try {
+        const { card_number } = req.body; // Destructure card_number from req.body
+        // Find a card by its card_number
+        const card = await Card.findOne({ card_number });
+        
+        if (!card) {
+            return res.status(404).json({ error: 'Card not found' });
+        }
+        
+        // Extract instructions field from the card document
+        const { instructions } = card;
 
-export const getcardbyCard_number = async(req,res)=>{
-    const id = req.params.card_number
-    if (!Card.validateID(id))return res.status(400).send('Invalid Id')
-    const card=await Card.findOne(card_number)
-    if(!card) res.status(404).send('The card does not exist')
-
-    else res.status(200).send(card)
-}
+        // Assuming you want to send the instructions as a response
+        return res.status(200).json({ instructions });
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};

@@ -17,9 +17,9 @@ const playerSchema = new mongoose.Schema({
     },
     fullname: String,
     points: { type: Number, default: 0 }, // Default points to 0
-    attempted: { type: Number, default: 0 }, // Default attempts to 0
-    Usertype: { type: String, enum: ['user', 'admin'], default: 'user' }, // Define USertype as enum
-    last_updated: { type: Date, default: Date.now } // Default last_updated to current date/time
+    cardcompleted:Number,
+    last_updated: { type: Date, default: Date.now },
+    questionscompleted : Number,
 });
 
 // Define a method to generate authentication token

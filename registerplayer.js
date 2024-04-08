@@ -15,8 +15,7 @@ async function registerPlayersFromCSV(csvPath, outputPath) {
         parser.on('data', async (data) => {
             try {
                 // Extract fullname and email from CSV row
-                const fullname = data.fullname;
-                const email = data.email;
+                const { fullname, email } = data;
 
                 // Generate a random password
                 const password = Math.random().toString(36).slice(-25); // Adjust length as needed
@@ -27,14 +26,21 @@ async function registerPlayersFromCSV(csvPath, outputPath) {
                 // Hash the password
                 const hashedPassword = await bcrypt.hash(password, 10);
 
-                // Save player details to the database
-                const player = new Player({
-                    fullname,
-                    email,
-                    password: hashedPassword
-                });
+                // Check if the email already exists in the database
+                const existingPlayer = await Player.findOne({ email });
 
-                promises.push(player.save());
+                if (existingPlayer) {
+                    console.log(`Player with email ${email} already exists.`);
+                } else {
+                    // Save player details to the database
+                    const player = new Player({
+                        fullname,
+                        email,
+                        password: hashedPassword
+                    });
+
+                    promises.push(player.save());
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -43,8 +49,15 @@ async function registerPlayersFromCSV(csvPath, outputPath) {
         parser.on('end', () => {
             outputStream.end(() => {
                 Promise.all(promises)
-                    .then(() => console.log({ message: 'Players registered and details saved to CSV successfully' }))
-                    .catch(error => console.error(error));
+                    .then(() => {
+                        console.log({ message: 'Players registered and details saved to CSV successfully' });
+                        // Resolve the function after all promises have resolved
+                        return { message: 'Players registered and details saved to CSV successfully' };
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        throw error; // Re-throw the error to be caught by the outer catch block
+                    });
             });
         });
 

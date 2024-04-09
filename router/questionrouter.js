@@ -1,11 +1,10 @@
 import { Router } from "express";
-
 import { QuestionPanel } from "../controllers/question.controller.js";
 import { upload } from "../helpers/multer.js";
 
-const r = Router();
+const questionrouter = Router();
 
-r.route("/question").post(
+questionrouter.route("/question").post(
   upload.fields([
     {
       name: "question_text",
@@ -15,4 +14,4 @@ r.route("/question").post(
   QuestionPanel,
 );
 
-export default r;
+export default questionrouter;

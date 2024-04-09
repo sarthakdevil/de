@@ -3,14 +3,14 @@ import fs from "fs";
 import crypto from "crypto";
 
 // Authentication
-const octokit = new Octokit({
-  auth: "",
-});
+//const octokit = new Octokit({
+//  auth: "",
+//});
 
 // Repository Information
-const owner = process.env.OWNER;
-const repo = process.env.REPO;
-const branch = "main";
+//const owner = process.env.OWNER;
+//const repo = process.env.REPO;
+//const branch = "main";
 
 function calculateFileHash(content) {
   const hash = crypto.createHash("sha256");

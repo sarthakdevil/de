@@ -8,8 +8,8 @@ const octokit = new Octokit({
 });
 
 // Repository Information
-const owner = "tushar1977";
-const repo = "decadisaster-media";
+const owner = process.env.OWNER;
+const repo = process.env.REPO;
 const branch = "main";
 
 function calculateFileHash(content) {

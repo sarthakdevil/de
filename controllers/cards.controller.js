@@ -1,8 +1,12 @@
 import Card from '../model/card.config.js'; 
-import { increasePointsHandler } from '../helpers/iscorrect.js';
 import crypto from 'crypto';
 import Player from '../model/user.config.js';
 
+export const  createCard = (req, res) => {
+    let card = new Card(req.body);
+    
+    if(!card.validate()) return res.status(400).send({error: "Invalid data"});
+}
 export const getcards = async (req, res, next) => {
     try {
         // Query all cards from the database

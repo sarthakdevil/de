@@ -1,6 +1,0 @@
-PORT=7000
-MONGODB_URI=""
-CORS_ORIGIN=*
-AUTH=""
-OWNER=""
-REPO="media-repo"

@@ -9,7 +9,7 @@ const cardSchema = new mongoose.Schema({
         required: [true, 'this is required value'],
     },
     points: Number,
-    question_array,
+    question_array:Array,
     instruction: String,
     noofquestions: Number,
 });

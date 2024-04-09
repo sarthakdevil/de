@@ -5,7 +5,7 @@ import { upload } from "../helpers/multer.js";
 
 const r = Router();
 
-r.route("/").post(
+r.route("/question").post(
   upload.fields([
     {
       name: "question_text",

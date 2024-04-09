@@ -6,7 +6,6 @@ import cookieParser from "cookie-parser";
 import r from "./router/authrouter.js";
 import cardr from "./router/cardrouter.js";
 import question from "./router/questionrouter.js";
-
 dotenv.config();
 const app = express();
 app.use(
@@ -20,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan(format));
 app.use(r);
-
+app.use
 app.use(cardr);
 app.get("*", (req, res) => {
   res.send(`<h1>Hello World! From Express Server</h1>`);

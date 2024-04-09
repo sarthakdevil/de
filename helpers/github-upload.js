@@ -4,7 +4,7 @@ import crypto from "crypto";
 
 // Authentication
 const octokit = new Octokit({
-  auth: "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",
+  auth: process.env.AUTH,
 });
 
 // Repository Information

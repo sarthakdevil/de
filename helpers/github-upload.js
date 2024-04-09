@@ -4,7 +4,7 @@ import crypto from "crypto";
 
 // Authentication
 const octokit = new Octokit({
-  auth: process.env.AUTH,
+  auth: dddd,
 });
 
 // Repository Information

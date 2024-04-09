@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { QuestionPanel } from "../controllers/question.controller.js";
 import { upload } from "../helpers/multer.js";
+import { questionalreadycompleted } from "../middleware/isquestioncompleted.js";
 
 const questionrouter = Router();
 
@@ -13,5 +14,5 @@ questionrouter.route("/question").post(
   ]),
   QuestionPanel,
 );
-
+questionrouter.get("/getquestions/:number",questions)
 export default questionrouter;

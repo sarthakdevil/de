@@ -1,6 +1,6 @@
-import Player from "../model/user.config";// Assuming you have a Player model
+import Player from "../model/user.config.js";// Assuming you have a Player model
 
-const ispreviouscompleted = async () => {
+export const ispreviouscompleted = async () => {
     const card_number = req.params.card_number
     const _id = req.user._id;
     
@@ -20,5 +20,3 @@ const ispreviouscompleted = async () => {
         return false;
     }
 };
-
-module.exports = ispreviouscompleted;

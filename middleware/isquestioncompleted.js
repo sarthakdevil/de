@@ -1,6 +1,6 @@
-const Player = require('./models/player'); // Assuming you have a Player model
+import Player from "../model/user.config.js"; // Assuming you have a Player model
 
-const questionalreadycompleted = async (req, res, next) => {
+export const questionalreadycompleted = async (req, res, next) => {
     try {
         const playerId = req.user._id; // Assuming you're extracting _id from user object in the request
         const questionNumber = req.params.question_number;
@@ -23,4 +23,3 @@ const questionalreadycompleted = async (req, res, next) => {
     }
 };
 
-module.exports = questionalreadycompleted;

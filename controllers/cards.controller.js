@@ -1,8 +1,34 @@
 import Card from '../model/card.config.js'; 
-import { increasePointsHandler } from '../helpers/iscorrect.js';
 import crypto from 'crypto';
 import Player from '../model/user.config.js';
 
+export const createCard = async (req, res, next) => {
+    try {
+        const { card_number, points, question_array, instruction, noofquestions } = req.body;
+
+        // Validate data
+        if (!card_number || !points || !question_array || !instruction || !noofquestions) {
+            return res.status(400).json({ error: "Incomplete data" });
+        }
+
+        // Create a new Card instance
+        const newCard = new Card({
+            card_number,
+            points,
+            question_array,
+            instruction,
+            noofquestions
+        });
+
+        // Save the new card to the database
+        await newCard.save();
+
+        res.status(201).json({ message: "Card saved successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 export const getcards = async (req, res, next) => {
     try {
         // Query all cards from the database
@@ -18,19 +44,20 @@ export const getcards = async (req, res, next) => {
 export const getcardbyCard_number = async (req, res) => {
 
     const cardNumber = req.params.card_number; // Assuming card_number is a parameter in the URL
-
+    const playerId = req.user._id
+    console.log(playerId)
     try {
 
         // Find the player by ID
-        const player = await Player.findOne({ playerId: req.user._id }); // Assuming req.user._id holds the player's ID
-
+        const player = await Player.findById(playerId); // Assuming req.user._id holds the player's ID
+        console.log(player.fullname)
         // If player not found, return 404
         if (!player) {
             return res.status(404).send('Player not found');
         }
 
         // Get the cardCompleted value from the player's data
-        const cardCompleted = player.cardCompleted;
+        const cardCompleted = player.cardcompleted;
 
         // If cardNumber is not 1 and cardCompleted doesn't match cardNumber - 1, send message to complete previous card
         if (cardNumber !== '1' && cardCompleted !== String(cardNumber - 1)) {

@@ -24,7 +24,7 @@ const playerSchema = new mongoose.Schema({
 
 // Define a method to generate authentication token
 playerSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({ _id: this._id }, 'your-secret-key', { expiresIn: '1h' });
+    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     return token;
 };
 

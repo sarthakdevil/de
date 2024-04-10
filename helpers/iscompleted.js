@@ -1,11 +1,11 @@
-import Card from "../model/card.config";
-import Player from "../model/user.config";
+import Card from "../model/card.config.js";
+import Player from "../model/user.config.js";
 
-export const iscardcompleted = async () => {
+export const iscardcompleted = async (card_number) => {
     try {
         // Get the number of questions from the card
         const card = await Card.findOne({ card_number });
-        const numQuestionsInCard = card.questions.length;
+        const numQuestionsInCard = card.noofquestions;
 
         // Get the number of questions completed by the player
         const player = await Player.findOne({ playerId });

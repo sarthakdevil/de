@@ -1,8 +1,7 @@
 import Player from "../model/user.config.js"
 import bcrypt from 'bcryptjs'
-import { decodeToken } from "../helpers/helper.js";
-import { increasePointsHandler, isCorrect, matchans } from "../helpers/iscorrect.js";
-import isLoggedIn from "../middleware/isloggedin.js";
+import { matchans } from "../helpers/iscorrect.js";
+import { iscardcompleted } from "../helpers/iscompleted.js";
 export const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -17,7 +16,7 @@ export const login = async (req, res, next) => {
             return res.status(401).json({ message: "Invalid username or password" });
         }
 
-        const validPassword = bcrypt.compare(password, user.password);
+        const validPassword = await bcrypt.compare(password, user.password);
 
         if (!validPassword) {
             return res.status(401).json({ message: "Invalid username or password" });
@@ -44,30 +43,29 @@ export const logout = (req, res) => {
     res.status(200).json({ message: "Logout successful" });
 };
 
- const answer(req,res)=>{
+ export const answer = async (req,res)=>{
+    const playerId = req.user._id
     const question_number= req.params.question_number
-    const answer = req.body;
+    let answer = req.body.answer;
+    let card_number = req.body.card_number
     answer= answer.toLowerCase();
-    const playerid = req.user._id
-    Player.updateone( { _id: playerId }, { $inc: { questionscompleted: 1 } })
-    const matchans = matchans(question_number,answer)
-    const completed = iscardcompleted()
+    Player.updateOne( { _id: playerId }, { $inc: { questionscompleted: 1 } })
+    const matched = await matchans(question_number,answer)
+    const completed = iscardcompleted(playerId,card_number)
 
     if (!completed){
 
     }else{
-        await playersCollection.updateOne(
-            { _id: playerid },
+        await Player.updateOne(
+            { _id: playerId },
             { $inc: { cardcompleted: 1 }, $set: { questionscompleted: 0 } }
         );
     }
-    if (!matchans) {
-        continue
-    }else {
-        // Find player by playerId and increase point by 1
-        await playersCollection.updateOne(
-            { _id: playerId },
-            { $inc: { point: 1 } }
-        );
-    } 
+    if (!matched) {
+                // Find player by playerId and increase point by 1
+                await Player.updateOne(
+                    { _id: playerId },
+                    { $inc: { point: 1 } }
+                )
+}
 }

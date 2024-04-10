@@ -14,5 +14,4 @@ questionrouter.route("/question").post(
   ]),
   QuestionPanel,
 );
-questionrouter.get("/getquestions/:number",questions)
 export default questionrouter;

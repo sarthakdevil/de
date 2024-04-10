@@ -7,6 +7,7 @@ const cardSchema = new mongoose.Schema({
     card_number: {
         type: Number,
         required: [true, 'this is required value'],
+        unique: true
     },
     points: Number,
     question_array:Array,

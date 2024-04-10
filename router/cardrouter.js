@@ -3,8 +3,8 @@ import {createCard, getcardbyCard_number, getcards, getinstructions} from "../co
 import isLoggedIn from "../middleware/isloggedin.js";
 import { ispreviouscompleted } from "../middleware/ispreviouscompleted.js";
 const  cardr = Router();
-cardr.post("/cards",getcards)
-cardr.get("/card",ispreviouscompleted,getcardbyCard_number)
+cardr.get("/cards",getcards)
+cardr.get("/card/:card_number",isLoggedIn,ispreviouscompleted,getcardbyCard_number)
 cardr.post("/create",isLoggedIn,createCard)
 cardr.get("/instructions",getinstructions)
 export  default cardr;

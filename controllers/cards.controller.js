@@ -2,11 +2,33 @@ import Card from '../model/card.config.js';
 import crypto from 'crypto';
 import Player from '../model/user.config.js';
 
-export const  createCard = (req, res) => {
-    let card = new Card(req.body);
-    
-    if(!card.validate()) return res.status(400).send({error: "Invalid data"});
-}
+export const createCard = async (req, res, next) => {
+    try {
+        const { card_number, points, question_array, instruction, noofquestions } = req.body;
+
+        // Validate data
+        if (!card_number || !points || !question_array || !instruction || !noofquestions) {
+            return res.status(400).json({ error: "Incomplete data" });
+        }
+
+        // Create a new Card instance
+        const newCard = new Card({
+            card_number,
+            points,
+            question_array,
+            instruction,
+            noofquestions
+        });
+
+        // Save the new card to the database
+        await newCard.save();
+
+        res.status(201).json({ message: "Card saved successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 export const getcards = async (req, res, next) => {
     try {
         // Query all cards from the database

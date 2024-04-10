@@ -1,6 +1,9 @@
 import { Router } from "express";
 
-import { QuestionPanel } from "../controllers/question.controller.js";
+import {
+  QuestionPanel,
+  getQuestion,
+} from "../controllers/question.controller.js";
 import { upload } from "../helpers/multer.js";
 
 const r = Router();
@@ -14,5 +17,7 @@ r.route("/").post(
   ]),
   QuestionPanel,
 );
+
+r.route("/get").post(getQuestion);
 
 export default r;

@@ -1,14 +1,22 @@
-import { answer } from "../controllers/auth.controller.js";
-import Card from "../model/card.config.js";
+import { QuestionPanel } from '../controllers/question.controller.js';
 
 export async function matchans(question_number, answer) {
     try {
-        // Find the card in question database 
-        //  If it exists then return true else false
-        // if ans matched return true 
-        // if not matched return false
-    }
-    catch (e) {
-        resizeBy.status(400).send(e)
+        // Find the question in the database
+        const question = await QuestionPanel.findOne({ question_number });
+
+        // If question doesn't exist, return false
+        if (!question) {
+            return false;
+        }
+
+        // Compare provided answer with expected answer
+        const isMatch = question.answer === answer;
+
+        return isMatch;
+    } catch (error) {
+        console.error('Error matching answer:', error);
+        // Handle the error as needed
+        return false;
     }
 }

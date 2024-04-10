@@ -1,6 +1,7 @@
 import Player from "../model/user.config.js"
 import bcrypt from 'bcryptjs'
 import { matchans } from "../helpers/iscorrect.js";
+import { iscardcompleted } from "../helpers/iscompleted.js";
 export const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -43,26 +44,26 @@ export const logout = (req, res) => {
 };
 
  export const answer = async (req,res)=>{
-    const playerId = req._id
+    const playerId = req.user._id
     const question_number= req.params.question_number
-    let answer = req.body;
+    let answer = req.body.answer;
+    let card_number = req.body.card_number
     answer= answer.toLowerCase();
-    const playerid = req.user._id
-    Player.updateone( { _id: playerId }, { $inc: { questionscompleted: 1 } })
-    const matchans = matchans(question_number,answer)
-    const completed = iscardcompleted()
+    Player.updateOne( { _id: playerId }, { $inc: { questionscompleted: 1 } })
+    const matched = await matchans(question_number,answer)
+    const completed = iscardcompleted(playerId,card_number)
 
     if (!completed){
 
     }else{
-        await playersCollection.updateOne(
-            { _id: playerid },
+        await Player.updateOne(
+            { _id: playerId },
             { $inc: { cardcompleted: 1 }, $set: { questionscompleted: 0 } }
         );
     }
-    if (!matchans) {
+    if (!matched) {
                 // Find player by playerId and increase point by 1
-                await playersCollection.updateOne(
+                await Player.updateOne(
                     { _id: playerId },
                     { $inc: { point: 1 } }
                 )

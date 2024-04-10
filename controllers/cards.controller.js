@@ -44,19 +44,20 @@ export const getcards = async (req, res, next) => {
 export const getcardbyCard_number = async (req, res) => {
 
     const cardNumber = req.params.card_number; // Assuming card_number is a parameter in the URL
-
+    const playerId = req.user._id
+    console.log(playerId)
     try {
 
         // Find the player by ID
-        const player = await Player.findOne({ playerId: req.user._id }); // Assuming req.user._id holds the player's ID
-
+        const player = await Player.findById(playerId); // Assuming req.user._id holds the player's ID
+        console.log(player.fullname)
         // If player not found, return 404
         if (!player) {
             return res.status(404).send('Player not found');
         }
 
         // Get the cardCompleted value from the player's data
-        const cardCompleted = player.cardCompleted;
+        const cardCompleted = player.cardcompleted;
 
         // If cardNumber is not 1 and cardCompleted doesn't match cardNumber - 1, send message to complete previous card
         if (cardNumber !== '1' && cardCompleted !== String(cardNumber - 1)) {

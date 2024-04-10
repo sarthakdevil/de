@@ -153,3 +153,18 @@ export const QuestionPanel = async (req, resp, next) => {
     }
   }
 };
+export const getQuestion = async (req, resp, next) => {
+  const { card_number } = req.body;
+
+  if (!card_number) {
+    return resp.status(400).json({ message: "Missing Fields" });
+  }
+
+  const data = await Question.find({ card_number: card_number }).select("-_id");
+
+  if (!data) {
+    return resp.status(400).json({ message: "Card Does not exist" });
+  }
+
+  return resp.status(200).json({ message: data });
+};

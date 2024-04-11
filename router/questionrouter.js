@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getQuestion, QuestionPanel } from "../controllers/question.controller.js";
+import { getQuestion, getsinglequestion, QuestionPanel } from "../controllers/question.controller.js";
 import { upload } from "../helpers/multer.js";
 import { questionalreadycompleted } from "../middleware/isquestioncompleted.js";
 import isLoggedIn from "../middleware/isloggedin.js";
@@ -15,5 +15,6 @@ questionrouter.route("/question").post(
   ]),
   QuestionPanel,
 );
-questionrouter.route("/get").get(isLoggedIn,questionalreadycompleted,getQuestion);
+questionrouter.route("/get").get(isLoggedIn,getQuestion);
+questionrouter.route("/getone/:number").get(isLoggedIn,questionalreadycompleted,previousquestioncompleted,getsinglequestion)
 export default questionrouter;

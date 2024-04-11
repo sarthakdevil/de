@@ -33,6 +33,7 @@ const QuestionSchema = new mongoose.Schema({
   answer: {
     type: String,
     required: [true, "Answer is required"],
+    default:false
   },
 });
 

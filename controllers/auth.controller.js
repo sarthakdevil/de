@@ -2,6 +2,8 @@ import Player from "../model/user.config.js"
 import bcrypt from 'bcryptjs'
 import { matchans } from "../helpers/iscorrect.js";
 import { iscardcompleted } from "../helpers/iscompleted.js";
+import { callnextquestion } from "../helpers/callnextquestion.js";
+
 export const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -45,7 +47,7 @@ export const logout = (req, res) => {
 
  export const answer = async (req,res)=>{
     const playerId = req.user._id
-    const question_number= req.params.question_number
+    const question_number= parseInt(req.params.question_number)
     let answer = req.body.answer;
     let card_number = req.body.card_number
     answer= answer.toLowerCase();
@@ -61,11 +63,12 @@ export const logout = (req, res) => {
             { $inc: { cardcompleted: 1 }, $set: { questionscompleted: 0 } }
         );
     }
-    if (!matched) {
+    if (matched) {
                 // Find player by playerId and increase point by 1
                 await Player.updateOne(
                     { _id: playerId },
                     { $inc: { point: 1 } }
                 )
 }
+    callnextquestion(question_number)
 }

@@ -168,3 +168,23 @@ export const getQuestion = async (req, resp, next) => {
 
   return resp.status(200).json({ message: data });
 };
+
+export const getsinglequestion = async (req, res, next) => {
+  try {
+      const question_number = req.params.number;
+      
+      // Find the question from the database by question_number
+      const question = await Question.findOne({ question_number });
+
+      if (!question) {
+          // If question not found, return 404 Not Found
+          return res.status(404).json({ message: 'Question not found' });
+      }
+
+      // Return the question as response
+      res.status(200).json({ question });
+  } catch (error) {
+      console.error('Error getting single question:', error);
+      res.status(500).send('Internal Server Error');
+  }
+};

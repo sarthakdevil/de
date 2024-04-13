@@ -15,6 +15,6 @@ questionrouter.route("/question").post(
   ]),
   QuestionPanel,
 );
-questionrouter.route("/get").get(isLoggedIn,getQuestion);
-questionrouter.route("/getone/:number").get(isLoggedIn,questionalreadycompleted,previousquestioncompleted,getsinglequestion)
+questionrouter.route("/get/:card_number").get(isLoggedIn,getQuestion);
+questionrouter.route("/getone/:number").get(isLoggedIn,questionalreadycompleted,getsinglequestion)
 export default questionrouter;

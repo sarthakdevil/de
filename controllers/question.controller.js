@@ -154,13 +154,13 @@ export const QuestionPanel = async (req, resp, next) => {
   }
 };
 export const getQuestion = async (req, resp, next) => {
-  const { card_number } = req.body;
-
+  let { card_number } = req.params;
+     card_number = parseInt(card_number)
   if (!card_number) {
     return resp.status(400).json({ message: "Missing Fields" });
   }
 
-  const data = await Question.find({ card_number: card_number }).select("-_id");
+  const data = await Question.find({ card_number: card_number }).select("-answer");
 
   if (!data) {
     return resp.status(400).json({ message: "Card Does not exist" });
@@ -171,10 +171,10 @@ export const getQuestion = async (req, resp, next) => {
 
 export const getsinglequestion = async (req, res, next) => {
   try {
-      const question_number = req.params.number;
-      
+      let question_number = req.params.number;
+      question_number = parseInt(question_number)
       // Find the question from the database by question_number
-      const question = await Question.findOne({ question_number });
+      const question = await Question.findOne({ questionId:question_number }).select("-answer");
 
       if (!question) {
           // If question not found, return 404 Not Found

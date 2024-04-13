@@ -49,26 +49,32 @@ export const logout = (req, res) => {
     const playerId = req.user._id
     const question_number= parseInt(req.params.question_number)
     let answer = req.body.answer;
-    let card_number = req.body.card_number
+    let card_number = req.params.card_number
+
     answer= answer.toLowerCase();
-    Player.updateOne( { _id: playerId }, { $inc: { questionscompleted: 1 } })
+
+    await Player.updateOne(
+        { _id: playerId }, // Filter: Update the document where _id equals playerId
+        { $inc: { questionscompleted: 1, totalquestionscompleted: 1 } }
+    );    
     const matched = await matchans(question_number,answer)
     const completed = iscardcompleted(playerId,card_number)
 
-    if (!completed){
-
-    }else{
+   if (completed === true){
         await Player.updateOne(
             { _id: playerId },
             { $inc: { cardcompleted: 1 }, $set: { questionscompleted: 0 } }
         );
+    }else{
+        null
     }
-    if (matched) {
+    if (matched === true) {
                 // Find player by playerId and increase point by 1
                 await Player.updateOne(
                     { _id: playerId },
-                    { $inc: { point: 1 } }
+                    { $inc: { points: 1 } }
                 )
 }
     callnextquestion(question_number)
+    res.send("gand marao")
 }

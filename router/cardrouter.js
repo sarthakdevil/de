@@ -5,5 +5,5 @@ const  cardr = Router();
 cardr.get("/cards",getcards)
 cardr.get("/card/:card_number",isLoggedIn,getcardbyCard_number)
 cardr.post("/create",isLoggedIn,createCard)
-cardr.get("/instructions",isLoggedIn,getinstructions)
+cardr.get("/instructions/:card_number",isLoggedIn,getinstructions)
 export  default cardr;

@@ -19,7 +19,8 @@ const playerSchema = new mongoose.Schema({
     points: { type: Number, default: 0 }, // Default points to 0
     cardcompleted:{type:Number,default:0},
     last_updated: { type: Date, default: Date.now },
-    questionscompleted : {type:Number,default:0}
+    questionscompleted : {type:Number,default:0},
+    totalquestionscompleted:{type:Number,default:0}
 });
 
 // Define a method to generate authentication token

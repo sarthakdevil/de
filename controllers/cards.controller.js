@@ -82,19 +82,21 @@ export const getcardbyCard_number = async (req, res) => {
 // Assuming you're defining this function within an Express route handler
 export const getinstructions = async (req, res) => {
     try {
-        const { card_number } = req.body; // Destructure card_number from req.body
+        let { card_number } = req.params; // Destructure card_number from req.body
+        card_number = parseInt(card_number)
+        console.log(card_number)
         // Find a card by its card_number
         const card = await Card.findOne({ card_number });
-        
+        console.log(card)
         if (!card) {
             return res.status(404).json({ error: 'Card not found' });
         }
         
         // Extract instructions field from the card document
-        const { instructions } = card;
+        const { instruction } = card;
 
         // Assuming you want to send the instructions as a response
-        return res.status(200).json({ instructions });
+        return res.status(200).json({ instruction });
     } catch (error) {
         console.error('Error:', error);
         return res.status(500).json({ error: 'Internal Server Error' });

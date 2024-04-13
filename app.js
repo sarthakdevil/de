@@ -25,6 +25,4 @@ app.use(cardr);
 app.get("*", (req, res) => {
   res.send(`<h1>Hello World! From Express Server</h1>`);
 });
-
-app.use("/api/v2/question", question);
 export default app;

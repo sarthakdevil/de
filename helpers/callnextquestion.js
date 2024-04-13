@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export const callnextquestion = async (question_number) => {
     try {
-        console.log(question_number);
         const nextquestion_number = question_number + 1;
 
         // Make an HTTP GET request to the next question route

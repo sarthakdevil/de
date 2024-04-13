@@ -6,6 +6,6 @@ import { questionalreadycompleted } from "../middleware/isquestioncompleted.js";
 const r = Router()
 r.post("/login",login)
 r.get("/logout",isLoggedIn,logout)
-r.put("/submit/:question_number",isLoggedIn,questionalreadycompleted,answer)
+r.put("/submit/:card_number/:question_number",isLoggedIn,questionalreadycompleted,answer)
 
 export  default r;

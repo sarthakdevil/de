@@ -3,8 +3,11 @@ import Player from "../model/user.config.js";
 
 export const iscardcompleted = async (playerId,card_number) => {
     try {
+        console.log(playerId)
+        console.log(card_number)
         // Get the number of questions from the card
-        const card = await Card.findOne({ card_number });
+        const card = await Card.findOne({ card_number : card_number });
+        console.log(card)
         const numQuestionsInCard = card.noofquestions;
         console.log(numQuestionsInCard)
         // Get the number of questions completed by the player

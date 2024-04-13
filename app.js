@@ -7,8 +7,22 @@ import r from "./router/authrouter.js";
 import cardr from "./router/cardrouter.js";
 import question from "./router/questionrouter.js";
 import questionrouter from "./router/questionrouter.js";
+import {rateLimit} from 'express-rate-limit'
+
 dotenv.config();
 const app = express();
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+	// store: ... , // Redis, Memcached, etc. See below.
+})
+
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
+
 app.use(
   cors({
     origin: process.env.FRONTEND_UL, // Allow requests from this origin

@@ -58,9 +58,8 @@ export const logout = (req, res) => {
         { $inc: { questionscompleted: 1, totalquestionscompleted: 1 } }
     );    
     const matched = await matchans(question_number,answer)
-    const completed = iscardcompleted(playerId,card_number)
 
-   if (completed === true){
+   if (iscardcompleted(playerId,card_number) === true){
         await Player.updateOne(
             { _id: playerId },
             { $inc: { cardcompleted: 1 }, $set: { questionscompleted: 0 } }
@@ -75,6 +74,5 @@ export const logout = (req, res) => {
                     { $inc: { points: 1 } }
                 )
 }
-    callnextquestion(question_number)
     res.send("gand marao")
 }

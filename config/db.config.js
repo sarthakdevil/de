@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const connectDB = async () => {
   try {
     const connectionInstance = await mongoose.connect(
-      "mongodb://127.0.0.1:27017/playerschema",
+      "mongodb+srv://wpsadi:1jwKgH2nXvyyVnp2@maindb.ust6caj.mongodb.net/playerschema",
       { writeConcern: { w: "majority" } },
     );
   } catch (error) {

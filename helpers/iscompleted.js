@@ -14,7 +14,7 @@ export const iscardcompleted = async (playerId,card_number) => {
         const player = await Player.findOne({ _id : playerId });
         const numQuestionsCompletedByPlayer = player.questionscompleted;
         console.log(numQuestionsCompletedByPlayer)
-        if(numQuestionsInCard <= numQuestionsCompletedByPlayer){
+        if(numQuestionsInCard == numQuestionsCompletedByPlayer){
             console.log("hogya")
             return true
     }

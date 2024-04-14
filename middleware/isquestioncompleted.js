@@ -13,7 +13,7 @@ export const questionalreadycompleted = async (req, res, next) => {
         }
 
         // Check if questionscompleted is equal to the question number
-        if (player.questionscompleted >= questionNumber) {
+        if (player.totalquestionscompleted >= questionNumber) {
             return res.status(400).json({ success: false, message: 'Question already completed' });
         }
         else{

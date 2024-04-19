@@ -7,21 +7,21 @@ import r from "./router/authrouter.js";
 import cardr from "./router/cardrouter.js";
 import question from "./router/questionrouter.js";
 import questionrouter from "./router/questionrouter.js";
-import {rateLimit} from 'express-rate-limit'
+import { rateLimit } from "express-rate-limit";
 
 dotenv.config();
 const app = express();
 
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
-	standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-	// store: ... , // Redis, Memcached, etc. See below.
-})
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+  // store: ... , // Redis, Memcached, etc. See below.
+});
 
 // Apply the rate limiting middleware to all requests.
-app.use(limiter)
+app.use(limiter);
 
 app.use(
   cors({
@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan(format));
 app.use(r);
-app.use(questionrouter)
+app.use(questionrouter);
 app.use(cardr);
 app.get("*", (req, res) => {
   res.send(`<h1>Hello World! From Express Server</h1>`);

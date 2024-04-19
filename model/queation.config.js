@@ -10,13 +10,25 @@ const QuestionSchema = new mongoose.Schema({
 
   question_text: {
     type: String,
-    required: false,
+    required: true,
+  },
+
+  question_image: {
+    type: String,
   },
 
   question_type: {
     type: String,
     required: [true, "Question type is required"],
-    enum: ["video", "image", "audio", "text"],
+    enum: [
+      "video",
+      "image",
+      "audio",
+      "text",
+      "image_options",
+      "video_options",
+      "audio_options",
+    ],
   },
 
   options: {
@@ -33,7 +45,7 @@ const QuestionSchema = new mongoose.Schema({
   answer: {
     type: String,
     required: [true, "Answer is required"],
-    default:false
+    default: false,
   },
 });
 

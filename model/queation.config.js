@@ -43,9 +43,10 @@ const QuestionSchema = new mongoose.Schema({
   },
 
   answer: {
-    type: String,
+    type: Array,
     required: [true, "Answer is required"],
     default: false,
+    lowercase:true
   },
 });
 

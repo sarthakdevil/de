@@ -10,7 +10,7 @@ export async function matchans(question_number, answer) {
         }
 
         // Compare provided answer with expected answer
-        const isMatch = question.answer === answer;
+        const isMatch = (question.answer).includes(answer);
         return isMatch;
         
     } catch (error) {

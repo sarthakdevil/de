@@ -43,7 +43,7 @@ const QuestionSchema = new mongoose.Schema({
   },
 
   answer: {
-    type: Array,
+    type: [String],
     required: [true, "Answer is required"],
     default: false,
     lowercase:true
